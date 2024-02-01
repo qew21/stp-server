@@ -1,0 +1,10 @@
+default:
+    md_server: tcp://210.14.72.21:4402
+    trader_server: tcp://210.14.72.21:4400
+    InvestorID: "******"
+    UserID: "******"
+    AccountID: "******"
+    Password: "******"
+    DepartmentID: "******"
+    SSE_ShareHolderID: "******"
+    SZ_ShareHolderID: "******"

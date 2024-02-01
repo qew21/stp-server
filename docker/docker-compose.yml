@@ -1,0 +1,14 @@
+version: "3"
+services:
+  server:
+    image: server:latest
+    restart: always
+    ports:
+      - 7001:7001
+    volumes:
+      - ./log:/app/server/log
+  client:
+    image: client:latest
+    restart: always
+    ports:
+      - 7000:3000
