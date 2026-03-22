@@ -1,4 +1,4 @@
-aiohttp==3.8.5
+aiohttp>=3.9.4  # CVE-2024-30251, CVE-2025-69223
 aiosignal==1.3.1
 akshare==1.10.42
 annotated-types==0.5.0
@@ -11,11 +11,11 @@ attrs==23.1.0
 backports.zoneinfo==0.2.1
 beautifulsoup4==4.12.2
 bs4==0.0.1
-certifi==2023.7.22
+certifi>=2024.7.4  # CVE-2024-39689
 charset-normalizer==3.2.0
 click==8.1.6
 decorator==5.1.1
-dnspython==2.3.0
+dnspython>=2.6.1  # CVE-2023-29483
 dynaconf==3.1.11
 email-validator==2.0.0.post2
 et-xmlfile==1.1.0
@@ -23,15 +23,15 @@ exceptiongroup==1.1.2
 fastapi==0.101.0
 frozenlist==1.3.3
 greenlet==2.0.2
-h11==0.14.0
+h11>=0.16.0  # CVE-2025-43859 (Critical)
 html5lib==1.1
 httpcore==0.17.3
 httptools==0.6.0
 httpx==0.24.1
-idna==3.4
+idna>=3.7  # CVE-2024-3651
 importlib-metadata==6.7.0
 itsdangerous==2.1.2
-Jinja2==3.1.2
+Jinja2>=3.1.5  # CVE-2024-34064, CVE-2025-27516
 jsonpath==0.82.2
 loguru==0.7.0
 lxml==4.9.3
@@ -39,33 +39,33 @@ MarkupSafe==2.1.3
 multidict==6.0.4
 numpy==1.21.6
 openpyxl==3.1.2
-orjson==3.9.5
+orjson>=3.11.5  # security update
 pandas==1.3.5
 py-mini-racer==0.6.0
-pydantic==2.1.1
+pydantic>=2.4.0  # CVE-2024-3772
 pydantic-extra-types==2.0.0
 pydantic-settings==2.0.3
 pydantic_core==2.4.0
 pypinyin==0.49.0
 python-dateutil==2.8.2
 python-dotenv==0.21.1
-python-multipart==0.0.6
+python-multipart>=0.0.18  # CVE-2024-53981, CVE-2026-24486
 pytz==2023.3
 PyYAML==6.0.1
-requests==2.31.0
+requests>=2.32.0  # CVE-2024-35195, CVE-2024-47081
 simplejson==3.19.1
 six==1.16.0
 sniffio==1.3.0
 soupsieve==2.4.1
 SQLAlchemy==1.4.46
-starlette==0.27.0
+starlette>=0.40.0  # CVE-2024-47874, CVE-2025-54121
 tabulate==0.9.0
-tqdm==4.66.1
+tqdm>=4.66.3  # CVE-2024-34062
 tushare==1.2.89
 typing_extensions==4.7.1
 tzlocal==5.0.1
 ujson==5.7.0
-urllib3==2.0.4
+urllib3>=2.2.2  # CVE-2025-66418, CVE-2025-66471, CVE-2026-21441
 uvicorn==0.17.6
 uvloop==0.17.0
 watchfiles==0.20.0
@@ -74,4 +74,4 @@ websocket-client==0.57.0
 websockets==11.0.3
 xlrd==2.0.1
 yarl==1.9.2
-zipp==3.15.0
+zipp>=3.19.1  # CVE-2024-5569
