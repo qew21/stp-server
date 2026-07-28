@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useEffect } from 'react';
-import { RefreshProvider } from './utils/Context';
+import RefreshProvider from './utils/RefreshProvider.jsx';
 import { Menu, Row, Col, Affix } from 'antd';
 import './App.css';
 import AccountTable from './info/account';
@@ -8,7 +8,7 @@ import OrdersTable from './info/orders';
 import TradesTable from './info/trades';
 import OrderForm from './order';
 
-function App() {
+export default function App() {
   const [activeKey, setActiveKey] = useState('account');
   const contentRef = React.useRef(null);
   const [totalMarketValue, setTotalMarketValue] = useState(0);
@@ -104,5 +104,3 @@ function App() {
     </RefreshProvider>
   );
 }
-
-export default App;

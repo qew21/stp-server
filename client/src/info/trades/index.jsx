@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import api from '../../utils/Request';
-import { useRefresh } from '../../utils/Context';
+import { useRefresh } from '../../utils/RefreshContext.js';
 import { Table } from 'antd';
+
+const EXCHANGE = {"1": "SH", "2": "SZ"};
+const DIRECTION = {"0": "买入", "1": "卖出"};
 
 const TradesTable = () => {
     const { refreshToken } = useRefresh();
@@ -11,18 +14,15 @@ const TradesTable = () => {
     };
 
     const [trades, setTrades] = useState([]);
-    const exchange = {"1": "SH", "2": "SZ"};
-    const direction_dict = {"0": "买入", "1": "卖出"};
-
     useEffect(() => {
         const fetchTrades = async () => {
             api.get('/get_trades')
                 .then(res => {
                     const tradesList = Object.entries(res.data[0]).map(([key, item]) => ({
                         'trade_id': key,
-                        code: exchange[item.ExchangeID] + item.SecurityID,
+                        code: EXCHANGE[item.ExchangeID] + item.SecurityID,
                         insert_time: item.TradeDate + ' ' + item.TradeTime,  
-                        direction: direction_dict[item.Direction],
+                        direction: DIRECTION[item.Direction],
                         ...item
                     }));
                     setTrades(tradesList);
