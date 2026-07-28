@@ -1,0 +1,16 @@
+
+
+FROM python:3.7-slim
+
+ENV TZ Asia/Shanghai
+
+WORKDIR /app
+
+RUN pip3 install pip --upgrade -i https://mirrors.aliyun.com/pypi/simple
+COPY server/requirements.txt .
+RUN pip3 install -i https://mirrors.aliyun.com/pypi/simple --no-cache-dir -r requirements.txt
+COPY server server
+ENV PYTHONPATH /app/server
+WORKDIR /app/server
+CMD ["python", "app/stp_service.py"]
+
