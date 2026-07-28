@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import api from '../../utils/Request';
-import { useRefresh } from '../../utils/Context';
+import { useRefresh } from '../../utils/RefreshContext.js';
 import { Table, Input } from 'antd';
 
+const EXCHANGE = {"1": "SH", "2": "SZ"};
 
 const SearchInput = ({ onSearch }) => {
     return <Input placeholder="搜索" onChange={e => onSearch(e.target.value)} />;
@@ -20,9 +21,6 @@ const PositionsTable = ({ onTotalValueChange }) => {
 
     const [positions, setPositions] = useState([]);
     const [filteredPositions, setFilteredPositions] = useState([]);
-    const exchange = {"1": "SH", "2": "SZ"}
-
-
     const handleSearch = (value, dataIndex) => {
         const filteredData = positions.filter(item => {
             const itemData = item[dataIndex].toString();
@@ -38,7 +36,7 @@ const PositionsTable = ({ onTotalValueChange }) => {
             api.get('/get_position')
                 .then(res => {
                     const transformedData = res.data[0].map(item => ({
-                        code: exchange[item.MarketID] + item.SecurityID,
+                        code: EXCHANGE[item.MarketID] + item.SecurityID,
                         SecurityName: item.SecurityName,
                         CurrentPosition: item.CurrentPosition,
                         open: item.CurrentPosition >  0 ? (item.TotalPosCost / item.CurrentPosition).toFixed(2) : 0,
@@ -66,7 +64,7 @@ const PositionsTable = ({ onTotalValueChange }) => {
             title: '证券代码',
             dataIndex: 'code',
             sorter: (a, b) => a.code.localeCompare(b.code),
-            filterDropdown: ({ setSelectedKeys, confirm, clearFilters }) => (
+            filterDropdown: () => (
                 <div style={{ padding: 8 }}>
                     <SearchInput onSearch={value => handleSearch(value, 'code')} />
                 </div>
@@ -76,7 +74,7 @@ const PositionsTable = ({ onTotalValueChange }) => {
             title: '证券名称',
             dataIndex: 'SecurityName',
             sorter: (a, b) => a.SecurityName.localeCompare(b.SecurityName),
-            filterDropdown: ({ setSelectedKeys, confirm, clearFilters }) => (
+            filterDropdown: () => (
                 <div style={{ padding: 8 }}>
                     <SearchInput onSearch={value => handleSearch(value, 'SecurityName')} />
                 </div>

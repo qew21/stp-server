@@ -1,7 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import api from '../../utils/Request';
-import { useRefresh } from '../../utils/Context';
-import { Table, Button } from 'antd';
+import { useRefresh } from '../../utils/RefreshContext.js';
+import { Table } from 'antd';
+
+const EXCHANGE = {"1": "SH", "2": "SZ"};
+const DIRECTION = {"0": "买入", "1": "卖出"};
+const ORDER_STATUS = {
+    "0": "预埋",
+    "1": "未知",
+    "2": "交易所已接收",
+    "3": "部分成交",
+    "4": "全部成交",
+    "5": "部成部撤",
+    "6": "全部撤单",
+    "7": "交易所已拒绝",
+    "8": "发往交易核心"
+};
+const PRICE_TYPE = {
+    1: "任意价",
+    2: "限价",
+    3: "最优价",
+    4: "盘后定价",
+    5: "五档价",
+    6: "本方最优",
+};
 
 const OrdersTable = () => {
     const { refreshToken } = useRefresh();
@@ -11,40 +33,18 @@ const OrdersTable = () => {
     };
 
     const [orders, setOrders] = useState([]);
-    const exchange = {"1": "SH", "2": "SZ"};
-    const direction_dict = {"0": "买入", "1": "卖出"};
-    const order_status = {
-        "0": "预埋",
-        "1": "未知",
-        "2": "交易所已接收",
-        "3": "部分成交",
-        "4": "全部成交",
-        "5": "部成部撤",
-        "6": "全部撤单",
-        "7": "交易所已拒绝",
-        "8": "发往交易核心"
-    };
-    const price_type_dict = {
-        1: "任意价",
-        2: "限价",
-        3: "最优价",
-        4: "盘后定价",
-        5: "五档价",
-        6: "本方最优",
-    };
-
-    const fetchOrders = async () => {
+    const fetchOrders = useCallback(async () => {
         api.get('/get_orders')
             .then(res => {
                 const transformedData = Object.entries(res.data[0])
-                .filter(([key, item]) => item.OrderStatus !== '6')
+                .filter(([, item]) => item.OrderStatus !== '6')
                 .map(([key, item]) => ({
                     'order_id': key,
-                    code: exchange[item.ExchangeID] + item.SecurityID,
-                    price_type: price_type_dict[item.OrderPriceType],
+                    code: EXCHANGE[item.ExchangeID] + item.SecurityID,
+                    price_type: PRICE_TYPE[item.OrderPriceType],
                     insert_time: item.InsertDate + ' ' + item.InsertTime,  
-                    status: order_status[item.OrderStatus],  
-                    direction: direction_dict[item.Direction],
+                    status: ORDER_STATUS[item.OrderStatus],
+                    direction: DIRECTION[item.Direction],
                     ...item
                 }));
                 console.log(transformedData);
@@ -53,26 +53,11 @@ const OrdersTable = () => {
             .catch(error => {
                 console.error(error);
             });
-    };
+    }, []);
 
     useEffect(() => {
         fetchOrders();
-    }, [refreshToken]);
-
-    const handleCancelOrder = async (orderId) => {
-        try {
-            api.get(`/order_delete?order_id=${orderId}`)
-                .then(res => {
-                    console.log(res.data);
-                    fetchOrders();
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-        } catch (error) {
-            console.error(error);
-        }
-    };
+    }, [fetchOrders, refreshToken]);
 
     const columns = [
         {
